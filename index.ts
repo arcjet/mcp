@@ -1,5 +1,6 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { TypeID } from "typeid-js";
 import { z } from "zod";
 
 const ARCJET_MCP_VERSION = "1.0.0";
@@ -45,10 +46,39 @@ interface Team {
     updatedAt: string;
 }
 
+interface Site {
+    id: string;
+    name: string;
+    teamId: string;
+    createdAt: string;
+    updatedAt: string;
+}
+
 async function listTeams(): Promise<Team[] | null> {
     const url = `${ARCJET_API_BASE}/v1/teams`;
     return makeArcjetAPIRequest<Team[]>(url);
 }
+
+async function listSites(teamId: string): Promise<Site[] | null> {
+    const url = `${ARCJET_API_BASE}/v1/teams/${teamId}/sites`;
+    return makeArcjetAPIRequest<Site[]>(url);
+}
+
+// Generic TypeID validator that can be used with any prefix
+// https://github.com/jetify-com/typeid-js
+const createTypeIdSchema = (prefix: string) => z.string().refine(
+    (val) => {
+        try {
+            const parsed = TypeID.fromString(val);
+            return parsed.getType() === prefix;
+        } catch {
+            return false;
+        }
+    },
+    {
+        message: `Invalid ID format. Must be a valid TypeID with '${prefix}' prefix`,
+    }
+);
 
 server.tool(
     "list-teams",
@@ -59,6 +89,7 @@ server.tool(
 
         if (!teams) {
             return {
+                isError: true,
                 content: [
                     {
                         type: "text",
@@ -88,6 +119,53 @@ server.tool(
                 {
                     type: "text",
                     text: `Available teams:\n\n${formatted}`,
+                },
+            ],
+        };
+    },
+);
+
+server.tool(
+    "list-sites",
+    "List all Arcjet sites for a specific team",
+    {
+        teamId: createTypeIdSchema("team").describe("The ID of the team to list sites for"),
+    },
+    async ({ teamId }) => {
+        const sites = await listSites(teamId);
+
+        if (!sites) {
+            return {
+                isError: true,
+                content: [
+                    {
+                        type: "text",
+                        text: "Failed to retrieve sites from Arcjet API.",
+                    },
+                ],
+            };
+        }
+
+        if (sites.length === 0) {
+            return {
+                content: [
+                    {
+                        type: "text",
+                        text: "No sites found for the specified team.",
+                    },
+                ],
+            };
+        }
+
+        const formatted = sites
+            .map((site) => `• ${site.name} (ID: \`${site.id}\`)`)
+            .join("\n");
+
+        return {
+            content: [
+                {
+                    type: "text",
+                    text: `Available sites:\n\n${formatted}`,
                 },
             ],
         };
