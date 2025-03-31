@@ -1,0 +1,43 @@
+{
+  "name": "@arcjet/mcp",
+  "version": "1.0.0",
+  "description": "Arcjet Model Context Protocol (MCP) server",
+  "license": "Apache-2.0",
+  "homepage": "https://arcjet.com",
+  "author": {
+    "name": "Arcjet",
+    "email": "support@arcjet.com",
+    "url": "https://arcjet.com"
+  },
+  "scripts": {
+    "build": "rollup --config rollup.config.js"
+  },
+  "keywords": [],
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "type": "module",
+  "main": "./index.js",
+  "types": "./index.d.ts",
+  "files": [
+    "LICENSE",
+    "README.md",
+    "*.js",
+    "*.d.ts",
+    "!*.config.js"
+  ],
+  "packageManager": "npm@11.0.0",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.8.0",
+    "zod": "3.24.2"
+  },
+  "devDependencies": {
+    "@arcjet/eslint-config": "1.0.0-beta.5",
+    "@arcjet/rollup-config": "1.0.0-beta.5",
+    "@arcjet/tsconfig": "1.0.0-beta.5",
+    "@types/node": "22.13.14",
+    "eslint": "9.23.0",
+    "tslib": "2.8.1",
+    "typescript": "5.8.2"
+  }
+}
