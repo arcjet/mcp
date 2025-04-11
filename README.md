@@ -22,6 +22,18 @@ about processed requests.
 
 ## Setup
 
+### `ARCJET_API_KEY`
+
+> [!IMPORTANT]
+> Arcjet does not currently have public API keys, so you need to grab an auth
+> session ID as the `ARCJET_API_KEY`. We're working on proper API key management.
+
+1. Log in to your [Arcjet account](https://app.arcjet.com).
+2. Open the developer tools in your browser.
+3. Go to the Application tab -> Storage -> Cookies.
+4. Use the value (a UUID) of the `session` cookie as the `ARCJET_API_KEY` in the
+   `mcp.json` file below.
+
 ### Cursor
 
 1. Clone this repository locally.
