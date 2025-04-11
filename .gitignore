@@ -133,6 +133,3 @@ dist
 index.js
 index.d.ts
 test/*.js
-
-# Cursor
-.cursor/mcp.json

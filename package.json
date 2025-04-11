@@ -28,7 +28,7 @@
   ],
   "packageManager": "npm@11.0.0",
   "dependencies": {
-    "@modelcontextprotocol/sdk": "1.8.0",
+    "@modelcontextprotocol/sdk": "1.9.0",
     "typeid-js": "1.2.0",
     "zod": "3.24.2"
   },
@@ -36,9 +36,9 @@
     "@arcjet/eslint-config": "1.0.0-beta.5",
     "@arcjet/rollup-config": "1.0.0-beta.5",
     "@arcjet/tsconfig": "1.0.0-beta.5",
-    "@types/node": "22.13.14",
-    "eslint": "9.23.0",
+    "@types/node": "22.14.00",
+    "eslint": "9.24.0",
     "tslib": "2.8.1",
-    "typescript": "5.8.2"
+    "typescript": "5.8.3"
   }
 }

@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "arcjet": {
+      "command": "node",
+      "args": ["/PATH/TO/mcp/index.js"],
+      "env": {
+        "ARCJET_API_KEY": "YOUR_KEY_HERE"
+      }
+    }
+  }
+}
