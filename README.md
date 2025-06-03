@@ -63,7 +63,7 @@ about processed requests.
 
 5. In the Cursor MCP settings, ensure the `arcjet` MCP server shows as enabled.
 
-### VSCode (GitHub Copilot)
+### VS Code (GitHub Copilot)
 
 1. Clone this repository locally.
 2. Run `npm install` and `npm run build`.
