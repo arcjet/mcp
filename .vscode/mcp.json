@@ -1,0 +1,9 @@
+{
+  "servers": {
+    "arcjet": {
+      "command": "node",
+      "args": ["${workspaceFolder}/index.js"],
+      "envFile": "${workspaceFolder}/.env"
+    }
+  }
+}
