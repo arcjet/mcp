@@ -63,6 +63,36 @@ about processed requests.
 
 5. In the Cursor MCP settings, ensure the `arcjet` MCP server shows as enabled.
 
+### VSCode (GitHub Copilot)
+
+1. Clone this repository locally.
+2. Run `npm install` and `npm run build`.
+3. Enable MCP support in VS Code by setting `chat.mcp.enabled` to `true` in your settings.
+4. Create a `.vscode/mcp.json` file in your workspace with the following configuration:
+
+   ```json
+   {
+     "servers": {
+       "arcjet": {
+         "command": "node",
+         "args": ["/PATH/TO/mcp/index.js"],
+         "env": {
+           "ARCJET_API_KEY": "YOUR_KEY_HERE"
+         }
+       }
+     }
+   }
+   ```
+
+   Replace `/PATH/TO/mcp/index.js` with the absolute path to `index.js` in this
+   repo. For example, if you cloned the repository to your Downloads folder on
+   macOS for the user `totoro` then this would be:
+   `/Users/totoro/Downloads/mcp/index.js`
+
+5. Restart VS Code or run the "MCP: Restart Server" command to load the server.
+6. Open the Chat view (Ctrl+Alt+I / Cmd+Option+I) and select "Agent mode" from the dropdown.
+7. Click the "Tools" button to see the available Arcjet tools and confirm the server is running.
+
 ## Get help
 
 [Join our Discord server](https://arcjet.com/discord) or [reach out for
