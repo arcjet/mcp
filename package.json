@@ -26,18 +26,18 @@
     "*.d.ts",
     "!*.config.js"
   ],
-  "packageManager": "npm@11.0.0",
+  "packageManager": "npm@11.4.1",
   "dependencies": {
-    "@modelcontextprotocol/sdk": "1.9.0",
+    "@modelcontextprotocol/sdk": "1.12.1",
     "typeid-js": "1.2.0",
-    "zod": "3.24.2"
+    "zod": "3.25.49"
   },
   "devDependencies": {
-    "@arcjet/eslint-config": "1.0.0-beta.5",
-    "@arcjet/rollup-config": "1.0.0-beta.5",
-    "@arcjet/tsconfig": "1.0.0-beta.5",
+    "@arcjet/eslint-config": "1.0.0-beta.8",
+    "@arcjet/rollup-config": "1.0.0-beta.8",
+    "@arcjet/tsconfig": "1.0.0-beta.8",
     "@types/node": "22.14.00",
-    "eslint": "9.24.0",
+    "eslint": "9.28.0",
     "tslib": "2.8.1",
     "typescript": "5.8.3"
   }
