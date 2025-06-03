@@ -65,8 +65,8 @@ async function listSites(teamId: string): Promise<Site[] | null> {
   return makeArcjetAPIRequest<Site[]>(url);
 }
 
-async function getSite(teamId: string, siteId: string): Promise<Site | null> {
-  const url = `${ARCJET_API_BASE}/v1/teams/${teamId}/sites/${siteId}`;
+async function getSite(siteId: string): Promise<Site | null> {
+  const url = `${ARCJET_API_BASE}/v1/sites/${siteId}`;
   return makeArcjetAPIRequest<Site>(url);
 }
 
@@ -188,11 +188,10 @@ server.tool(
   "get-site-key",
   "Get the key for a specific site for use with the Arcjet SDK",
   {
-    teamId: createTypeIdSchema("team").describe("The ID of the team"),
     siteId: createTypeIdSchema("site").describe("The ID of the site"),
   },
-  async ({ teamId, siteId }) => {
-    const site = await getSite(teamId, siteId);
+  async ({ siteId }) => {
+    const site = await getSite(siteId);
 
     if (!site) {
       return {
