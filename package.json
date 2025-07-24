@@ -28,7 +28,7 @@
   ],
   "packageManager": "npm@11.4.2",
   "dependencies": {
-    "@modelcontextprotocol/sdk": "1.15.1",
+    "@modelcontextprotocol/sdk": "1.17.0",
     "typeid-js": "1.2.0",
     "zod": "3.25.76"
   },
