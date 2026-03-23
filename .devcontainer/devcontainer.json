@@ -10,7 +10,7 @@
   },
   "customizations": {
     "vscode": {
-      "extensions": ["Anthropic.claude-code"]
+      "extensions": ["Anthropic.claude-code", "esbenp.prettier-vscode"]
     }
   }
   // Features to add to the dev container. More info: https://containers.dev/features.

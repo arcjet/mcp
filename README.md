@@ -7,93 +7,129 @@
 
 # Arcjet - MCP Server
 
-[Arcjet](https://arcjet.com) helps developers protect their apps in just a few
-lines of code. Bot detection. Rate limiting. Email validation. Attack
-protection. Data redaction. A developer-first approach to security.
+[Arcjet](https://arcjet.com) is the runtime AI security platform that ships with
+your code. Stop bots and automated attacks from burning your AI budget, leaking
+data, or misusing tools with Arcjet's AI security building blocks.
 
 This is the Arcjet [Model Context Protocol](https://modelcontextprotocol.io/)
-(MCP) server. It provides AI agents with useful context that will help you
-integrate Arcjet into your application and retrieve information from Arcjet
-about processed requests.
+(MCP) server. The server runs as an HTTP server MCP clients authenticate via
+OAuth 2.0.
 
 ## Features
 
-- List teams and sites.
+- **list-teams** — List all Arcjet teams the authenticated user belongs to.
+- **list-sites** — List all Arcjet sites for a given team.
+- **get-site-key** — Retrieve the SDK key for a site (used as `ARCJET_KEY` in
+  your app).
 
-## Setup
+## Running the server
 
-### `ARCJET_API_KEY`
+1. Clone this repository.
+2. Install dependencies and build:
 
-> [!IMPORTANT]
-> Arcjet does not currently have public API keys, so you need to grab an auth
-> session ID as the `ARCJET_API_KEY`. We're working on proper API key management.
-
-1. Log in to your [Arcjet account](https://app.arcjet.com).
-2. Open the developer tools in your browser.
-3. Go to the Application tab -> Storage -> Cookies.
-4. Use the value (a UUID) of the `session` cookie as the `ARCJET_API_KEY` in the
-   `mcp.json` file below.
-
-### Cursor
-
-1. Clone this repository locally.
-2. Run `npm install` and `npm run build`.
-3. Open Cursor settings (Cmd+Shift+P > Cursor Settings) > MCP > Add new MCP
-   server.
-4. Add the following into the `mcp.json` file:
-
-   ```json
-   {
-     "mcpServers": {
-       "arcjet": {
-         "command": "node",
-         "args": ["/PATH/TO/mcp/index.js"],
-         "env": {
-           "ARCJET_API_KEY": "YOUR_KEY_HERE"
-         }
-       }
-     }
-   }
+   ```sh
+   npm install && npm run build
    ```
 
-   Replace `/PATH/TO/mcp/index.js` with the absolute path to `index.js` in this
-   repo. For example, if you cloned the repository to your Downloads folder on
-   macOS for the user `totoro` then this would be:
-   `/Users/totoro/Downloads/mcp/index.js`
+3. Create a `.env` file:
 
-5. In the Cursor MCP settings, ensure the `arcjet` MCP server shows as enabled.
+   ```sh
+   MCP_SERVER_URL=http://localhost:3000   # public URL of this server
+   PORT=3000
+   ```
+
+4. Start the server:
+
+   ```sh
+   node index.js
+   ```
+
+   The server listens on `http://localhost:3000` by default. When deploying, set
+   `MCP_SERVER_URL` to the public URL (e.g. `https://mcp.example.com`).
+
+## Client setup
 
 ### VS Code (GitHub Copilot)
 
-1. Clone this repository locally.
-2. Run `npm install` and `npm run build`.
-3. Enable MCP support in VS Code by setting `chat.mcp.enabled` to `true` in your settings.
-4. Create a `.vscode/mcp.json` file in your workspace with the following configuration:
+1. Enable MCP support in VS Code: set `chat.mcp.enabled` to `true` in Settings.
+2. Create or update `.vscode/mcp.json` in your workspace:
 
    ```json
    {
      "servers": {
        "arcjet": {
-         "command": "node",
-         "args": ["/PATH/TO/mcp/index.js"],
-         "env": {
-           "ARCJET_API_KEY": "YOUR_KEY_HERE"
-         }
+         "type": "http",
+         "url": "http://localhost:3000/mcp"
        }
      }
    }
    ```
 
-   Replace `/PATH/TO/mcp/index.js` with the absolute path to `index.js` in this
-   repo. For example, if you cloned the repository to your Downloads folder on
-   macOS for the user `totoro` then this would be:
-   `/Users/totoro/Downloads/mcp/index.js`
+3. Open the Chat view (`Ctrl+Alt+I` / `Cmd+Option+I`) and select **Agent mode**.
+4. On first use, VS Code will prompt you to complete the Arcjet login flow.
+5. Click **Tools** to confirm the Arcjet tools are available.
 
-5. Restart VS Code or run the "MCP: Restart Server" command to load the server.
-6. Open the Chat view (Ctrl+Alt+I / Cmd+Option+I) and select "Agent mode" from the dropdown.
-7. Click the "Tools" button to see the available Arcjet tools and confirm the server is running.
+### Cursor
+
+1. Open Cursor Settings → **MCP** → **Add new MCP server**.
+2. Add the following to your `mcp.json`:
+
+   ```json
+   {
+     "mcpServers": {
+       "arcjet": {
+         "url": "http://localhost:3000/mcp"
+       }
+     }
+   }
+   ```
+
+3. Cursor will prompt you to authenticate to Arcjet on first use.
+4. Confirm the `arcjet` MCP server shows as enabled in Cursor MCP settings.
+
+### Claude Code
+
+1. Add the server to your Claude Code MCP configuration. Run:
+
+   ```sh
+   claude mcp add --transport http arcjet http://localhost:3000/mcp
+   ```
+
+   Or add it manually to your Claude Code settings (`~/.claude/settings.json`
+   for global, or `.claude/settings.json` for project-level):
+
+   ```json
+   {
+     "mcpServers": {
+       "arcjet": {
+         "type": "http",
+         "url": "http://localhost:3000/mcp"
+       }
+     }
+   }
+   ```
+
+2. Claude Code will launch the Arcjet login flow the first time it connects.
+3. The Arcjet tools will be available in your Claude Code session.
+
+### ChatGPT
+
+1. In [ChatGPT](https://chatgpt.com), go to **Settings** → **Connectors** →
+   **Add connector**.
+2. Select **MCP Server** and enter your server URL:
+
+   ```
+   http://localhost:3000/mcp
+   ```
+
+3. ChatGPT will redirect you to Arcjet to complete the login flow.
+4. Once connected, the Arcjet tools are available in your chats.
+
+> [!NOTE] For ChatGPT (and any remote use), the server must be reachable at a
+> public URL. Replace `http://localhost:3000` with your deployed server URL and
+> ensure `MCP_SERVER_URL` is set accordingly. |
 
 ## Get help
 
-[Join our Discord server](https://arcjet.com/discord) or [reach out for
-support](https://docs.arcjet.com/support).
+[Join our Discord server](https://arcjet.com/discord) or
+[reach out for support](https://docs.arcjet.com/support).

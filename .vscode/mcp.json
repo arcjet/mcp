@@ -1,9 +1,8 @@
 {
   "servers": {
     "arcjet": {
-      "command": "node",
-      "args": ["${workspaceFolder}/index.js"],
-      "envFile": "${workspaceFolder}/.env"
+      "type": "http",
+      "url": "http://localhost:3000/mcp"
     }
   }
 }
