@@ -7,7 +7,7 @@
 
 # Arcjet - MCP Server
 
-[Arcjet](https://arcjet.com) Arcjet is the runtime AI security platform that
+[Arcjet](https://arcjet.com) is the runtime AI security platform that
 ships with your code. Stop bots and automated attacks from burning your AI
 budget, leaking data, or misusing tools with Arcjet's AI security building
 blocks.
