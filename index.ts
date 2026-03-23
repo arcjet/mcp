@@ -12,9 +12,6 @@ const USER_AGENT = `arcjet-mcp/${ARCJET_MCP_VERSION}`;
 const server = new McpServer({
   name: "arcjet",
   version: ARCJET_MCP_VERSION,
-  capabilities: {
-    tools: {},
-  },
 });
 
 async function makeArcjetAPIRequest<T>(url: string): Promise<T | null> {
