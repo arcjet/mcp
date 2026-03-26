@@ -12,6 +12,170 @@ ships with your code. Stop bots and automated attacks from burning your AI
 budget, leaking data, or misusing tools with Arcjet's AI security building
 blocks.
 
-[Sign up for an account](https://app.arcjet.com/) then
-[head to the docs](https://docs.arcjet.com/mcp-server) for instructions on how
-to connect your AI to Arcjet.
+The Arcjet MCP server lets AI assistants access your Arcjet account through the
+[Model Context Protocol (MCP)](https://modelcontextprotocol.io), an open
+standard for connecting AI tools to external services.
+
+Connect your AI coding tools to Arcjet to:
+
+- **List teams** you belong to.
+- **List sites** within a team.
+- **Create new sites** within a team.
+- **Get site keys** (`ARCJET_KEY`) for use in your projects.
+- **List requests** received by a site with optional filtering.
+- **Get request details** including headers, rules executed, and decision info.
+- **Get site quota** usage and limits for the current billing window.
+
+The MCP server is available at:
+
+```
+https://api.arcjet.com/mcp
+```
+
+It implements the latest
+[MCP Authorization](https://modelcontextprotocol.io/specification/2025-06-18/basic/authorization)
+and
+[Streamable HTTP](https://modelcontextprotocol.io/specification/2025-06-18/basic/transports#streamable-http)
+specifications with OAuth-based authentication.
+
+## Supported clients
+
+Any client that supports the latest [MCP
+specification](https://modelcontextprotocol.io/specification/2025-06-18) with
+[Streamable HTTP transport](https://modelcontextprotocol.io/specification/2025-06-18/basic/transports#streamable-http)
+and [OAuth authorization](https://modelcontextprotocol.io/specification/2025-06-18/basic/authorization)
+is supported. This includes:
+
+- [ChatGPT](#chatgpt)
+- [Claude Code](#claude-code)
+- [Claude Desktop](#claude-desktop)
+- [Cursor](#cursor)
+- [VS Code with Copilot](#vs-code-with-copilot)
+- [Windsurf](#windsurf)
+- Many others that implement the MCP specification.
+
+## Setup
+
+### ChatGPT
+
+1. In ChatGPT, go to **Settings**.
+2. Navigate to **Connectors** and select **Add connection**.
+3. Enter `https://api.arcjet.com/mcp` as the server URL.
+4. Select **OAuth** for authentication.
+5. Click **Create**.
+
+ChatGPT handles the OAuth flow automatically.
+
+### Claude Code
+
+```bash
+claude mcp add arcjet --transport http https://api.arcjet.com/mcp
+```
+
+Claude Code will open a browser for OAuth authentication on first connection.
+Once authenticated, you can use the `/mcp` command to verify the connection.
+
+### Claude Desktop
+
+<Aside type="note">
+  Remote MCP connections are available on Claude Desktop for users on [Pro, Max,
+  Team, and Enterprise
+  plans](https://support.anthropic.com/en/articles/11175166-getting-started-with-custom-connectors-using-remote-mcp).
+</Aside>
+
+1. Open **Settings** in the sidebar.
+2. Navigate to **Connectors** and select **Add custom connector**.
+3. Configure the connector:
+   - **Name:** `Arcjet`
+   - **URL:** `https://api.arcjet.com/mcp`
+
+### Cursor
+
+Add to `.cursor/mcp.json` in your project:
+
+```json
+{
+  "mcpServers": {
+    "arcjet": {
+      "type": "streamable-http",
+      "url": "https://api.arcjet.com/mcp"
+    }
+  }
+}
+```
+
+After adding the server, Cursor will show a **Needs login** prompt. Click it to
+authorize Cursor to access your Arcjet account.
+
+### VS Code with Copilot
+
+Add to your `.vscode/mcp.json` in your project or user settings:
+
+```json
+{
+  "servers": {
+    "arcjet": {
+      "type": "http",
+      "url": "https://api.arcjet.com/mcp"
+    }
+  }
+}
+```
+
+Or add it via the command palette:
+
+1. Open the Command Palette (<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd> on
+   Windows/Linux or <kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd> on macOS).
+2. Run **MCP: Add Server**.
+3. Select **HTTP**.
+4. Enter the URL: `https://api.arcjet.com/mcp`
+5. Enter the name: `Arcjet`
+6. Select **Workspace** or **User** depending on your preference.
+
+VS Code will prompt you to authenticate via OAuth on first use.
+
+### Windsurf
+
+Add to your `mcp_config.json` file:
+
+```json
+{
+  "mcpServers": {
+    "arcjet": {
+      "serverUrl": "https://api.arcjet.com/mcp"
+    }
+  }
+}
+```
+
+For more details, see the
+[Windsurf MCP documentation](https://docs.windsurf.com/windsurf/cascade/mcp#adding-a-new-mcp-plugin).
+
+## Available tools
+
+Once connected, the following tools are available to your AI assistant:
+
+| Tool | Description |
+| --- | --- |
+| `list-teams` | Lists teams the authenticated user belongs to. |
+| `list-sites` | Lists sites within a specified team. |
+| `create-site` | Creates a new site within a specified team. |
+| `get-site-key` | Returns the SDK key (`ARCJET_KEY`) for a specific site. |
+| `list-requests` | Lists recent requests for a site. Supports filtering by conclusion (`ALLOW`, `DENY`, `ERROR`) and pagination. |
+| `get-request-details` | Returns full details for a specific request including headers, rules executed, and decision information. |
+| `get-site-quota` | Returns quota usage and limits for a site in the current billing window. |
+
+## Authentication
+
+The MCP server uses OAuth for authentication. When you first connect from any
+supported client, you will be redirected to sign in with your Arcjet account.
+Once authenticated, your AI assistant can securely access your account resources.
+
+## Security
+
+- **Verify the endpoint** — always confirm you are connecting to
+  `https://api.arcjet.com/mcp`.
+- **Review tool calls** — enable confirmation prompts in your AI client so you
+  can review actions before they execute.
+- **Trusted clients only** — only connect from AI clients you trust. Connecting
+  grants the AI tool the same access as your Arcjet account.
